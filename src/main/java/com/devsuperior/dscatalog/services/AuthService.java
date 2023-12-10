@@ -13,8 +13,6 @@ import com.devsuperior.dscatalog.repositories.UserRepository;
 
 import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 
-import com.nimbusds.jwt.JWT;
-import com.nimbusds.jwt.JWTClaimsSet;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +26,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.security.oauth2.jwt.Jwt;
+
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -71,7 +70,7 @@ public class AuthService {
 
         PasswordRecover entity = new PasswordRecover();
         entity.setEmail(body.getEmail());
-        entity.setToken(UUID.randomUUID().toString());
+        entity.setToken(token);
         entity.setExpiration(Instant.now().plusSeconds(tokenMinutes * 60L));
         entity = passwordRecoverRepository.save(entity);
 
@@ -104,7 +103,4 @@ public class AuthService {
             throw new UsernameNotFoundException("Invalid user");
         }
     }
-
-
-
 }
